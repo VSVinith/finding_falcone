@@ -1,22 +1,19 @@
-// import { Component } from "react";
+import { Component } from "react";
 
 
-// class Dropdown extends Component {
+const Dropdown = (props) => {
+    const { planetsList, handleDropdown } = props
 
-    
+    const handleChange = (event) => {
+        handleDropdown(event.target.value)
+    }
+    return (
+        <select onChange={handleChange}>
+            <option value="">choose</option>
+            {planetsList.map(planet => <option key={planet.name}>{planet.name}</option>)
+            }
+        </select >
+    )
+}
 
-//     render() {
-//         const {planetsList} = this.props
-//         return (
-//             <select >
-//                 {
-//                     planetsList.map(planet => <option onClick={this.remainingPlanets}>{planet.name}</option>
-
-//                     )
-//                 }
-//             </select >
-//         )
-//     }
-// }
-
-// export default Dropdown
+export default Dropdown

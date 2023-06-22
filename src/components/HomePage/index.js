@@ -1,3 +1,4 @@
+import Dropdown from '../Dropdown'
 import './index.css'
 
 import { Component } from 'react'
@@ -5,9 +6,13 @@ import { Component } from 'react'
 class HomePage extends Component {
 
     state = {
-        planetsList: [],
-        selectedPlanets: [],
-        isDisabled: false
+        initialPlanetsList: [],
+        remainingPlanetsList: [],
+        selectedPlanet1: "",
+        selectedPlanet2: "",
+        selectedPlanet3: "",
+        selectedPlanet4: "",
+
     }
 
     componentDidMount() {
@@ -24,27 +29,46 @@ class HomePage extends Component {
         const planetsUrlResponse = await fetch(planetsUrl, options)
         if (planetsUrlResponse.ok) {
             const fetchedData = await planetsUrlResponse.json()
-            this.setState({ planetsList: fetchedData })
+            this.setState({ initialPlanetsList: fetchedData, remainingPlanetsList: fetchedData })
         }
 
-        console.log(this.state.planetsList)
+        console.log("planetsList from url", this.state.initialPlanetsList)
     }
 
-    handleChange =  (event) => {
-        const { planetsList, selectedPlanets, isDisabled } = this.state
-        console.log(event.target.value)
-        const selectedPlanet = event.target.value
-   
-        const remainingPlanetsList =  planetsList.filter((planet) => event.target.value !== planet.name)
-        
-        let updatedselectedPlanets = [...selectedPlanets, selectedPlanet]
+    handleDropdown1 = (planetFromChild) => {
+        const { remainingPlanetsList } = this.state
+        console.log("from event", planetFromChild) 
+        const remainingPlanets = remainingPlanetsList.filter(planet => planet.name !== planetFromChild ) 
+        console.log("remaining planets after dropdown1:", remainingPlanets)
+        this.setState({remainingPlanetsList: remainingPlanets, selectedPlanet1: planetFromChild} )
+    }
 
-        this.setState({ planetsList: remainingPlanetsList, selectedPlanets: updatedselectedPlanets, isDisabled: !isDisabled }, ()=> console.log(selectedPlanet))
-        
+    handleDropdown2 = (planetFromChild) => {
+        const { remainingPlanetsList } = this.state
+        console.log("from event", planetFromChild) 
+        const remainingPlanets = remainingPlanetsList.filter(planet => planet.name !== planetFromChild) 
+        console.log("remaining planets after dropdown2:", remainingPlanets)
+        this.setState({remainingPlanetsList: remainingPlanets, selectedPlanet2: planetFromChild} )
+    }
+
+    handleDropdown3 = (planetFromChild) => {
+        const { remainingPlanetsList } = this.state
+        console.log("from event", planetFromChild) 
+        const remainingPlanets = remainingPlanetsList.filter(planet => planet.name !== planetFromChild ) 
+        console.log("remaining planets after dropdown3:", remainingPlanets)
+        this.setState({remainingPlanetsList: remainingPlanets, selectedPlanet3: planetFromChild} )
+    }
+
+    handleDropdown4 = (planetFromChild) => {
+        const { remainingPlanetsList } = this.state
+        console.log("from event", planetFromChild) 
+        const remainingPlanets = remainingPlanetsList.filter(planet => planet.name !== planetFromChild ) 
+        console.log("remaining planets after dropdown4:", remainingPlanets)
+        this.setState({remainingPlanetsList: remainingPlanets, selectedPlanet4: planetFromChild} )
     }
 
     render() {
-        const { planetsList, selectedPlanets, isDisabled } = this.state
+        const { remainingPlanetsList, selectedPlanet1, selectedPlanet2, selectedPlanet3, selectedPlanet4, isDisabled1, isDisabled2, isDisabled3, isDisabled4 } = this.state
         return (
             <div className='home-page-container'>
                 <h1>Finding Falcone</h1>
@@ -54,42 +78,23 @@ class HomePage extends Component {
 
                     <div>
                         <p>Destination 1:</p>
-                        <label htmlFor='' >Choose</label>
-                        <select name="first" id="first" onChange={this.handleChange}>
-                            <option  value="" disabled={isDisabled} >Choose Planet</option>
-                            {planetsList.map(planet => <option disabled={isDisabled} value={planet.name} key={planet.name} >{planet.name}</option>
-
-                            )}
-                         
-                        </select>
-                        <p>Destination selected: {selectedPlanets[0]}</p>
+                        <Dropdown planetsList={remainingPlanetsList} handleDropdown={this.handleDropdown1} />
+                        <p>Destination selected: {selectedPlanet1}</p>
                     </div>
                     <div>
-                        <p>Destination 2:</p>
-                        <select name="second" onChange={this.handleChange}>
-                        <option >Choose Planet</option>
-                            {planetsList.map(planet => <option  value={planet.name} key={planet.name} >{planet.name}</option>
-
-                            )}
-                        </select>
+                        <p>Destination 2:</p>                       
+                        <Dropdown planetsList={remainingPlanetsList} handleDropdown={this.handleDropdown2} />
+                        <p>Destination selected: {selectedPlanet2}</p>
                     </div>
                     <div>
-                        <p>Destination 3:</p>
-                        <select name="third" onChange={this.handleChange}> 
-                        <option >Choose Planet</option>
-                            {planetsList.map(planet => <option value={planet.name} key={planet.name}>{planet.name}</option>
-
-                            )}
-                        </select>
+                        <p>Destination 3:</p>                        
+                        <Dropdown planetsList={remainingPlanetsList} handleDropdown={this.handleDropdown3} />
+                        <p>Destination selected: {selectedPlanet3}</p>
                     </div>
                     <div>
                         <p>Destination 4:</p>
-                        <select name="fourth" onChange={this.handleChange}>
-                        <option >Choose Planet</option>
-                            {planetsList.map(planet => <option value={planet.name} key={planet.name}>{planet.name}</option>
-
-                            )}
-                        </select>
+                        <Dropdown planetsList={remainingPlanetsList}  handleDropdown={this.handleDropdown4} />
+                        <p>Destination selected: {selectedPlanet4}</p>
                     </div>
 
                     <div>
